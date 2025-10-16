@@ -6,13 +6,20 @@ class ToDoTask extends StatelessWidget {
   final bool isDone;
   final Function(bool?)? onChanged;
   final Function(BuildContext?)? deleteTask;
+  final DateTime date;
   const ToDoTask({
     super.key,
     required this.task,
     required this.isDone,
     required this.onChanged,
     this.deleteTask,
+    required this.date,
   });
+
+  String showDate() {
+    var result = '${date.hour}:${date.minute}';
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +43,37 @@ class ToDoTask extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(width: 1.5),
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Checkbox(
-                value: isDone,
-                onChanged: onChanged,
-                checkColor: Theme.of(context).colorScheme.onPrimary,
-                side: BorderSide(
-                  color: Theme.of(context).colorScheme.onPrimaryFixedVariant,
-                  width: 1.5,
-                ),
-              ),
-              Flexible(
-                child: Text(
-                  task,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    decoration: isDone
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                    decorationThickness: 2,
-                    fontSize: 18,
+              Text(showDate()),
+              Row(
+                children: [
+                  Checkbox(
+                    value: isDone,
+                    onChanged: onChanged,
+                    checkColor: Theme.of(context).colorScheme.onPrimary,
+                    side: BorderSide(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryFixedVariant,
+                      width: 1.5,
+                    ),
                   ),
-                ),
+                  Flexible(
+                    child: Text(
+                      task,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        decoration: isDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                        decorationThickness: 2,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

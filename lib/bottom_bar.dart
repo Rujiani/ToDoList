@@ -11,32 +11,33 @@ class BottomTextBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      color: Theme.of(context).colorScheme.primary,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: textController,
-              cursorColor: Theme.of(context).colorScheme.onPrimary,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: BottomAppBar(
+        color: Theme.of(context).colorScheme.primary,
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: textController,
+                cursorColor: Theme.of(context).colorScheme.onPrimary,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  hintText: 'Add new task',
+                  fillColor: Theme.of(context).colorScheme.inversePrimary,
+                  filled: true,
                 ),
-                fillColor: Theme.of(context).colorScheme.inversePrimary,
-                filled: true,
               ),
             ),
-          ),
-          Container(
-            color: Theme.of(context).colorScheme.primary,
-            child: IconButton(
+            IconButton(
               onPressed: onPressed,
               icon: Icon(Icons.add_task),
               color: Theme.of(context).colorScheme.onPrimary,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
