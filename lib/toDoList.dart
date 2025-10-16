@@ -17,8 +17,14 @@ class ToDoTask extends StatelessWidget {
   });
 
   String showDate() {
-    var result = '${date.hour}:${date.minute}';
-    return result;
+    var result = '';
+    if (date.day < DateTime.now().day) {
+      result += '  ${date.day}.${date.month}';
+    }
+    if (date.year < DateTime.now().year) {
+      result += '.${date.year}';
+    }
+    return '${date.hour}:${(date.minute > 9) ? '${date.minute}' : '0${date.minute}'}$result';
   }
 
   @override
@@ -46,7 +52,6 @@ class ToDoTask extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(showDate()),
               Row(
                 children: [
                   Checkbox(
@@ -69,11 +74,21 @@ class ToDoTask extends StatelessWidget {
                             ? TextDecoration.lineThrough
                             : TextDecoration.none,
                         decorationThickness: 2,
-                        fontSize: 18,
+                        fontSize: 19,
                       ),
                     ),
                   ),
                 ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, bottom: 5),
+                child: Text(
+                  'Created at:  ${showDate()}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
               ),
             ],
           ),
