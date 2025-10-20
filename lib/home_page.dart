@@ -4,6 +4,7 @@ import 'package:to_do/bottom_bar.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do/task.dart';
+import 'dart:ui';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -85,15 +86,43 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      body: ListView.builder(
+      body: ReorderableListView.builder(
+        proxyDecorator: (child, index, animation) {
+          return AnimatedBuilder(
+            animation: animation,
+            builder: (BuildContext context, Widget? child) {
+              final double animValue = Curves.easeInOut.transform(
+                animation.value,
+              );
+              final double scale = lerpDouble(1, 1.03, animValue)!;
+              return Transform.scale(scale: scale, child: child);
+            },
+            child: child,
+          );
+        },
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        onReorder: (int oldIndex, int newIndex) {
+          setState(() {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            final item = toDoList.removeAt(oldIndex);
+            toDoList.insert(newIndex, item);
+          });
+        },
         itemCount: toDoList.length,
         itemBuilder: (BuildContext context, index) {
-          return ToDoTask(
-            task: toDoList[index].taskMessage,
-            isDone: toDoList[index].isDone,
-            date: toDoList[index].createDate,
-            onChanged: (value) => onChanged(index),
-            deleteTask: (context) => deleteTask(index),
+          return ReorderableDragStartListener(
+            key: ValueKey(toDoList[index]),
+            enabled: false,
+            index: index,
+            child: ToDoTask(
+              task: toDoList[index].taskMessage,
+              isDone: toDoList[index].isDone,
+              date: toDoList[index].createDate,
+              onChanged: (value) => onChanged(index),
+              deleteTask: (context) => deleteTask(index),
+            ),
           );
         },
       ),

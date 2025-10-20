@@ -19,7 +19,7 @@ class ToDoTask extends StatelessWidget {
   String showDate() {
     var result = '';
     if (date.day < DateTime.now().day) {
-      result += '  ${date.day}.${date.month}';
+      result += ' ${date.day}.${date.month}';
     }
     if (date.year < DateTime.now().year) {
       result += '.${date.year}';
@@ -29,69 +29,65 @@ class ToDoTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
-      child: Slidable(
-        endActionPane: ActionPane(
-          motion: StretchMotion(),
-          children: [
-            SlidableAction(
-              onPressed: deleteTask,
-              icon: Icons.delete,
-              backgroundColor: Theme.of(context).colorScheme.error,
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ],
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryFixedDim,
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: StretchMotion(),
+        children: [
+          SlidableAction(
+            onPressed: deleteTask,
+            icon: Icons.delete,
+            backgroundColor: Theme.of(context).colorScheme.error,
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(width: 1.5),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Checkbox(
-                    value: isDone,
-                    onChanged: onChanged,
-                    checkColor: Theme.of(context).colorScheme.onPrimary,
-                    side: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimaryFixedVariant,
-                      width: 1.5,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      task,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        decoration: isDone
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                        decorationThickness: 2,
-                        fontSize: 19,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, bottom: 5),
-                child: Text(
-                  'Created at:  ${showDate()}',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+        ],
+      ),
+      child: Card(
+        elevation: 2,
+        color: Theme.of(context).colorScheme.primaryFixedDim,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 1.2),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Checkbox(
+                  value: isDone,
+                  onChanged: onChanged,
+                  checkColor: Theme.of(context).colorScheme.onPrimary,
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryFixedVariant,
+                    width: 1.5,
                   ),
                 ),
+                Flexible(
+                  child: Text(
+                    task,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      decoration: isDone
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      decorationThickness: 2,
+                      fontSize: 19,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, bottom: 5),
+              child: Text(
+                'Created at:  ${showDate()}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
