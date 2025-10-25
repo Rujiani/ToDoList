@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class BottomTextBar extends StatelessWidget {
   final TextEditingController textController;
   final VoidCallback? onPressed;
+  final FocusNode focusNode;
   const BottomTextBar({
     super.key,
     required this.textController,
     this.onPressed,
+    required this.focusNode,
   });
 
   @override
@@ -19,6 +21,7 @@ class BottomTextBar extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
+                focusNode: focusNode,
                 controller: textController,
                 cursorColor: Theme.of(context).colorScheme.onPrimary,
                 decoration: InputDecoration(

@@ -4,7 +4,7 @@ part 'task.g.dart';
 
 @JsonSerializable()
 class Task {
-  final String taskMessage;
+  String taskMessage;
   bool isDone;
   final DateTime createDate;
   Task({

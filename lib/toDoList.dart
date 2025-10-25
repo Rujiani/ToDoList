@@ -6,6 +6,7 @@ class ToDoTask extends StatelessWidget {
   final bool isDone;
   final Function(bool?)? onChanged;
   final Function(BuildContext?)? deleteTask;
+  final Function(BuildContext?)? editTask;
   final DateTime date;
   const ToDoTask({
     super.key,
@@ -14,6 +15,7 @@ class ToDoTask extends StatelessWidget {
     required this.onChanged,
     this.deleteTask,
     required this.date,
+    this.editTask,
   });
 
   String showDate() {
@@ -34,10 +36,19 @@ class ToDoTask extends StatelessWidget {
         motion: StretchMotion(),
         children: [
           SlidableAction(
+            onPressed: editTask,
+            icon: Icons.edit,
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.onSecondaryFixedVariant,
+            borderRadius: BorderRadius.horizontal(left: Radius.circular(15)),
+            autoClose: true,
+          ),
+          SlidableAction(
             onPressed: deleteTask,
             icon: Icons.delete,
             backgroundColor: Theme.of(context).colorScheme.error,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.horizontal(right: Radius.circular(15)),
           ),
         ],
       ),

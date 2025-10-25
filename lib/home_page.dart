@@ -17,6 +17,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List toDoList = <Task>[];
   late TextEditingController _textController;
+  final FocusNode _focusNode = FocusNode();
+  int? _editingIndex;
 
   void onChanged(int index) {
     setState(() {
@@ -28,13 +30,20 @@ class _MyHomePageState extends State<MyHomePage> {
   void onPressed() {
     setState(() {
       var task = _textController.text.trim();
-      if (task.isNotEmpty) {
+      if (task.isEmpty) {
+        return;
+      }
+
+      if (_editingIndex != null) {
+        toDoList[_editingIndex!].taskMessage = _textController.text;
+        _editingIndex = null;
+      } else {
         toDoList.add(
           Task(taskMessage: task, isDone: false, createDate: DateTime.now()),
         );
-        _textController.clear();
       }
     });
+    _textController.clear();
     _saveTasks();
   }
 
@@ -43,6 +52,14 @@ class _MyHomePageState extends State<MyHomePage> {
       toDoList.removeAt(index);
     });
     _saveTasks();
+  }
+
+  void editTask(int index) {
+    setState(() {
+      _textController.text = toDoList[index].taskMessage;
+      _focusNode.requestFocus();
+      _editingIndex = index;
+    });
   }
 
   @override
@@ -120,6 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
               task: toDoList[index].taskMessage,
               isDone: toDoList[index].isDone,
               date: toDoList[index].createDate,
+              editTask: (context) => editTask(index),
               onChanged: (value) => onChanged(index),
               deleteTask: (context) => deleteTask(index),
             ),
@@ -127,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       bottomNavigationBar: BottomTextBar(
+        focusNode: _focusNode,
         textController: _textController,
         onPressed: onPressed,
       ),
