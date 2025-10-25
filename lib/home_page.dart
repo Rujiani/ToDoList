@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do/task.dart';
 import 'dart:ui';
+import 'package:flutter/services.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -58,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _textController.text = toDoList[index].taskMessage;
       _focusNode.requestFocus();
+      SystemChannels.textInput.invokeMethod('TextInput.show');
       _editingIndex = index;
     });
   }
