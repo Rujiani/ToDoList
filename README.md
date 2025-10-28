@@ -10,11 +10,10 @@ A clean and minimalistic Flutter application for managing daily tasks efficientl
 
 ## ✨ Features
 
-- ✅ Add, edit, and delete tasks  
+- ✅ Add, edit, reorder and delete tasks  
 - 📅 Mark tasks as completed  
 - 💾 Local data persistence  
 - 🧭 Simple and intuitive interface  
-- 🎨 Custom themes and rounded UI elements  
 
 ---
 
@@ -22,8 +21,8 @@ A clean and minimalistic Flutter application for managing daily tasks efficientl
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/todo-app.git
-cd todo-app
+git clone https://github.com/Rujiani/ToDoList.git
+cd ToDoList
 ````
 
 ### 2. Install dependencies
@@ -44,22 +43,10 @@ flutter run
 
 * **Framework:** Flutter
 * **Language:** Dart
-* **State Management:** setState / Provider (depending on version)
-* **Storage:** SharedPreferences / local file storage
-* **Platform:** Android (iOS planned)
-
----
-
-## 📁 Project Structure
-
-```
-lib/
- ├── main.dart             # Entry point
- ├── screens/              # App screens
- ├── widgets/              # Reusable UI components
- └── models/               # Data structures
-```
-
+* **State Management:** setState
+* **Storage:** local file storage
+* **Platform:** Android
+* 
 ---
 
 ## 🔐 Build & Release
@@ -69,13 +56,6 @@ To create a signed APK:
 ```bash
 flutter build apk --release
 ```
-
-If using your own keystore, ensure that:
-
-* `android/key.properties` is **not committed**
-* `.jks` file is **stored securely**
-
----
 
 ## 🧑‍💻 Author
 
