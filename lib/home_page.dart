@@ -50,6 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void deleteTask(int index) {
     setState(() {
+      if (_editingIndex != null) {
+        if (_editingIndex == index) {
+          cancel();
+        } else if (_editingIndex! > index) {
+          _editingIndex = _editingIndex! - 1;
+        }
+      }
       toDoList.removeAt(index);
     });
     _saveTasks();
@@ -61,6 +68,17 @@ class _MyHomePageState extends State<MyHomePage> {
       _focusNode.requestFocus();
       SystemChannels.textInput.invokeMethod('TextInput.show');
       _editingIndex = index;
+    });
+    _saveTasks();
+  }
+
+  void cancel() {
+    setState(() {
+      if (_editingIndex != null) {
+        _editingIndex = null;
+        _textController.clear();
+        _focusNode.unfocus();
+      }
     });
   }
 
@@ -94,62 +112,73 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<bool> _onWillPop() async {
+    if (_editingIndex != null) {
+      cancel();
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(
-          widget.title,
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(
+            widget.title,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      body: ReorderableListView.builder(
-        proxyDecorator: (child, index, animation) {
-          return AnimatedBuilder(
-            animation: animation,
-            builder: (BuildContext context, Widget? child) {
-              final double animValue = Curves.easeInOut.transform(
-                animation.value,
-              );
-              final double scale = lerpDouble(1, 1.03, animValue)!;
-              return Transform.scale(scale: scale, child: child);
-            },
-            child: child,
-          );
-        },
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            final item = toDoList.removeAt(oldIndex);
-            toDoList.insert(newIndex, item);
-          });
-        },
-        itemCount: toDoList.length,
-        itemBuilder: (BuildContext context, index) {
-          return ReorderableDragStartListener(
-            key: ValueKey(toDoList[index]),
-            enabled: false,
-            index: index,
-            child: ToDoTask(
-              task: toDoList[index].taskMessage,
-              isDone: toDoList[index].isDone,
-              date: toDoList[index].createDate,
-              editTask: (context) => editTask(index),
-              onChanged: (value) => onChanged(index),
-              deleteTask: (context) => deleteTask(index),
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: BottomTextBar(
-        focusNode: _focusNode,
-        textController: _textController,
-        onPressed: onPressed,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+        body: ReorderableListView.builder(
+          proxyDecorator: (child, index, animation) {
+            return AnimatedBuilder(
+              animation: animation,
+              builder: (BuildContext context, Widget? child) {
+                final double animValue = Curves.easeInOut.transform(
+                  animation.value,
+                );
+                final double scale = lerpDouble(1, 1.03, animValue)!;
+                return Transform.scale(scale: scale, child: child);
+              },
+              child: child,
+            );
+          },
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (oldIndex < newIndex) {
+                newIndex -= 1;
+              }
+              final item = toDoList.removeAt(oldIndex);
+              toDoList.insert(newIndex, item);
+            });
+          },
+          itemCount: toDoList.length,
+          itemBuilder: (BuildContext context, index) {
+            return ReorderableDragStartListener(
+              key: ValueKey(toDoList[index]),
+              enabled: false,
+              index: index,
+              child: ToDoTask(
+                task: toDoList[index].taskMessage,
+                isDone: toDoList[index].isDone,
+                date: toDoList[index].createDate,
+                editTask: (context) => editTask(index),
+                onChanged: (value) => onChanged(index),
+                deleteTask: (context) => deleteTask(index),
+              ),
+            );
+          },
+        ),
+        bottomNavigationBar: BottomTextBar(
+          focusNode: _focusNode,
+          textController: _textController,
+          onPressed: onPressed,
+        ),
       ),
     );
   }

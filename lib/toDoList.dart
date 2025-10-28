@@ -74,15 +74,18 @@ class ToDoTask extends StatelessWidget {
                   ),
                 ),
                 Flexible(
-                  child: Text(
-                    task,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      decoration: isDone
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                      decorationThickness: 2,
-                      fontSize: 19,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0, right: 10.0),
+                    child: Text(
+                      task,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        decoration: isDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                        decorationThickness: 2,
+                        fontSize: 19,
+                      ),
                     ),
                   ),
                 ),
