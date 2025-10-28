@@ -62,20 +62,22 @@ class ToDoTask extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Checkbox(
-                  value: isDone,
-                  onChanged: onChanged,
-                  checkColor: Theme.of(context).colorScheme.onPrimary,
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.onPrimaryFixedVariant,
-                    width: 1.5,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: isDone,
+                    onChanged: onChanged,
+                    checkColor: Theme.of(context).colorScheme.onPrimary,
+                    side: BorderSide(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryFixedVariant,
+                      width: 1.5,
+                    ),
                   ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0, right: 10.0),
+                  Flexible(
                     child: Text(
                       task,
                       style: TextStyle(
@@ -88,8 +90,8 @@ class ToDoTask extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15, bottom: 5),
